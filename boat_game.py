@@ -19,4 +19,4 @@ while True:
         x = 0
     
     Screen.render()
-    time.sleep(1)
+    time.sleep(0.1)

@@ -15,13 +15,15 @@ class Screen():
 
     def render(self, system="windows"):
         # implement efficiancies e.g. previosly renderd screen and only updating changes
-        output = "\033[H"
+        print("\033[H",end="")
         for y in range(len(self.screen)):
+            line = ""
             for x in range(len(self.screen[y])):
-                output = output+str(self.screen[y][x])
-            output = output+"\n"
+                line = line + str(self.screen[y][x])
+            print(line)
+            
 
-        print(output, end="")
+        
 
     def define(self,x,y,character,colour=(255,255,255)):
         r,g,b = colour
@@ -32,15 +34,50 @@ class Screen():
             for x in range(self.width):
                 self.define(x,y,character,colour)
 
+    
+
     def line(self):
         pass
 
 
+class Sprite():
+    def __init__(self,x,y,z,image):
+        self.x = x
+        self.y = y
+        self.z = z 
+        self.image = image
+        assert type(image) == Image, "image must be of type tiny Image"
+        
+
+    
+    def show(self):
+        return self.image
+    
+    
+
+class Universe():
+    def __init__(self):
+        self.universe = [] #array of all renderable objects
+    
+
 
 class Image():
     def __init__(self,filename,scale):
-        image = []
-    
+        from PIL import Image as im
+        self.points = []
+        self.width = int(image.width*scale)
+        self.hight = int(image.height*scale)
+        with im.open(filename).convert('RGB') as image:
+            image = image.resize((self.width,self.hight))
+            for y in range(0,self.hight):
+                line = []
+                for x in range(0,self.width):
+                    R,G,B = image.getpixel((x,y))
+                    line.append((R,G,B))
+                self.points.append(line)
+    def get_pixels(self):
+        return self.points
+
         
 
 
