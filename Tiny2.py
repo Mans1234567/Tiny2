@@ -25,7 +25,7 @@ class Screen():
 
         
 
-    def define(self,x,y,character,colour=(255,255,255)):
+    def define(self,x,y,character="█",colour=(255,255,255)):
         r,g,b = colour
         self.screen[y][x] = f"\033[38;2;{r};{g};{b}m{character}\x1b[0m"
 
@@ -36,8 +36,27 @@ class Screen():
 
     
 
-    def line(self):
-        pass
+    def line(self,start,end,colour=(255,255,255)):
+        if start[0] == end[0]:
+            for y in range(min(start[1],end[1],max(start[1],end[1]))):
+                self.define(start[0],y,colour=colour)
+        elif start[1] == end[1]:
+            for x in range(min(start[0],end[0]),max(start[0],end[0])):
+                self.define(x,start[1],colour=colour)
+        else: 
+            if start[0] > end[0]:
+                temp = end
+                end = start
+                start = temp
+            x1,y1 = start
+            x2, y2 = end
+            m = (y2-y1)/(x2-x1)
+            for x in range(x1,x2+1):
+                y = int(round((m*x)+y1,0))
+                self.define(x,y,colour=colour)
+        
+
+
 
 
 class Sprite():
